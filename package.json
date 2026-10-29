@@ -1,0 +1,32 @@
+{
+  "name": "ecommerce",
+  "version": "0.1.0",
+  "description": "Plantilla open source de tienda online con backend en TypeScript y NestJS",
+  "author": "Ángel Gómez",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "node src/producto.ts",
+    "check": "tsc"
+  },
+  "keywords": [
+    "ecommerce",
+    "typescript",
+    "nestjs",
+    "tienda",
+    "opensource"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angelgmx/ecommerce.git"
+  },
+  "bugs": {
+    "url": "https://github.com/angelgmx/ecommerce/issues"
+  },
+  "homepage": "https://github.com/angelgmx/ecommerce#readme",
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  }
+}
