@@ -5,7 +5,7 @@
 
 import type { Producto, Categoria } from "./producto.ts";
 
-const catalogo: Producto[] = [
+export const catalogo: Producto[] = [
     { id: 1, nombre: "Camiseta",        precio: 1990, stock: 10, categoria: "camisetas" },
     { id: 2, nombre: "Sudadera",        precio: 3990, stock: 4,  categoria: "sudaderas" },
     { id: 3, nombre: "Vaqueros",        precio: 4990, stock: 7,  categoria: "pantalones" },
@@ -14,7 +14,7 @@ const catalogo: Producto[] = [
 ];
 
 /** Devuelve el producto con ese id, o `undefined` si no existe. */
-function buscarPorId(catalogo: Producto[], id: number): Producto | undefined {
+export function buscarPorId(catalogo: Producto[], id: number): Producto | undefined {
     return catalogo.find(p => p.id === id);
 }
 
@@ -28,25 +28,4 @@ function ordenarPorPrecio(catalogo: Producto[]): Producto[] {
     return catalogo.toSorted((a, b) => a.precio - b.precio);
 }
 
-// Pruebas manuales: cada consulta con un caso normal y uno sin resultados.
 
-console.log("— buscarPorId —");
-console.log(buscarPorId(catalogo, 2));
-console.log(buscarPorId(catalogo, 99));
-
-const producto = buscarPorId(catalogo, 99);
-if (producto === undefined) {
-    console.log("No existe ningún producto con ese id");
-} else {
-    console.log(producto.nombre);
-}
-
-console.log("\n— filtrarPorCategoria —");
-console.log(filtrarPorCategoria(catalogo, "camisetas"));
-console.log(filtrarPorCategoria(catalogo, "gorras"));
-
-console.log("\n— ordenarPorPrecio —");
-console.log(ordenarPorPrecio(catalogo).map(p => `${p.nombre}: ${p.precio}`));
-
-console.log("\n— catálogo original, sin cambios —");
-console.log(catalogo.map(p => `${p.nombre}: ${p.precio}`));

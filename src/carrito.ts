@@ -61,25 +61,3 @@ export function cambiarCantidad(carrito: Carrito, productoId: number, cantidad: 
     });
 }
 
-const vacio: Carrito = [];
-
-const conUno = anadir(vacio, 1, 2);
-console.log("Añadir producto 1 (x2):", conUno, "| antes:", vacio);
-
-const conDos = anadir(conUno, 3, 1);
-console.log("Añadir producto 3 (x1):", conDos, "| antes:", conUno);
-
-const sumado = anadir(conDos, 1, 1);
-console.log("Volver a añadir el 1 (+1, tiene que sumar):", sumado, "| antes:", conDos);
-
-const cambiado = cambiarCantidad(sumado, 3, 5);
-console.log("Cambiar el 3 a 5 unidades:", cambiado, "| antes:", sumado);
-
-const aCero = cambiarCantidad(cambiado, 3, 0);
-console.log("Cambiar el 3 a 0 (tiene que desaparecer):", aCero, "| antes:", cambiado);
-
-const sinElUno = quitar(cambiado, 1);
-console.log("Quitar el 1:", sinElUno, "| antes:", cambiado);
-
-const sinCambios = quitar(cambiado, 99);
-console.log("Quitar el 99, que no está (sale igual):", sinCambios, "| antes:", cambiado);
