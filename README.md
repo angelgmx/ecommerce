@@ -1,30 +1,53 @@
 <div align="center">
 
-# ecommerce
+<img src="docs/assets/portada.png" alt="openecommerce: plantilla open source para montar tu propia tienda online" width="100%">
 
-**Plantilla open source para montar tu propia tienda online.**
-Backend en TypeScript y NestJS, pensado para que cualquiera lo descargue, lo configure y venda lo suyo.
+<br>
 
-![Estado](https://img.shields.io/badge/estado-en%20desarrollo-orange)
-![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6?logo=typescript&logoColor=white)
-![NestJS](https://img.shields.io/badge/NestJS-backend-E0234E?logo=nestjs&logoColor=white)
-![Licencia](https://img.shields.io/badge/licencia-MIT-green)
+**Una tienda online que es tuya de verdad: tu código, tus datos y tus clientes.**
+
+![Estado](https://img.shields.io/badge/estado-en%20construcción-2747D6?style=flat-square&labelColor=1B1916)
+![TypeScript](https://img.shields.io/badge/TypeScript-strict-2747D6?style=flat-square&logo=typescript&logoColor=white&labelColor=1B1916)
+![NestJS](https://img.shields.io/badge/NestJS-API-E0533A?style=flat-square&logo=nestjs&logoColor=white&labelColor=1B1916)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-datos-9ED9BC?style=flat-square&logo=postgresql&logoColor=white&labelColor=1B1916)
+![Licencia](https://img.shields.io/badge/licencia-MIT-B9A7F2?style=flat-square&labelColor=1B1916)
+
+[Qué es](#qué-es) · [Hoja de ruta](#hoja-de-ruta) · [Cómo está hecho](#cómo-está-hecho) · [Empezar](#empezar) · [Decisiones](#decisiones-de-diseño)
 
 </div>
 
----
+<br>
 
 ## Qué es
 
-Una tienda online completa que puedes usar como punto de partida: catálogo, carrito, usuarios, pedidos y pagos. La idea es que no tengas que empezar de cero ni depender de una plataforma cerrada.
+**openecommerce** es una plantilla open source para montar una tienda online sin empezar de cero y sin depender de una plataforma cerrada. La descargas, la configuras y vendes lo tuyo: catálogo, carrito, usuarios, pedidos y pagos.
 
-El foco está en el **backend**: una API sólida, segura y bien probada, que aguante los casos reales de una tienda (stock que se agota mientras dos personas compran, pagos que llegan dos veces, pedidos que hay que deshacer).
+El foco está en el **backend**: una API sólida, segura y bien probada, pensada para los problemas que aparecen cuando una tienda vende de verdad.
 
-> **Estado actual:** en construcción. El proyecto avanza por fases y este README se actualiza con cada una.
+| El problema | Cómo lo resuelve |
+| --- | --- |
+| `0.1 + 0.2` no da `0.3` y los totales se descuadran | Todos los precios van en **céntimos enteros** |
+| Dos personas compran la última unidad a la vez | **Transacciones** y control de stock en la base de datos |
+| Stripe avisa dos veces del mismo pago | **Webhooks idempotentes**: cobrar una vez, aunque el aviso llegue dos |
+| Un error en el carrito deja datos a medias | El dominio **nunca modifica el original**: cada operación devuelve un estado nuevo |
+
+> [!NOTE]
+> El proyecto está en construcción y avanza por fases. Este README se actualiza al cerrar cada una.
 
 ## Hoja de ruta
 
-- [ ] **Núcleo del dominio:** catálogo, carrito y descuentos en TypeScript puro, con tests
+**Fase 1 · Núcleo del dominio** <sub>en curso</sub>
+
+- [x] Modelo de producto con precios en céntimos
+- [x] Catálogo: buscar por id, filtrar por categoría y ordenar por precio
+- [x] Carrito inmutable: añadir, quitar y cambiar cantidad
+- [x] Comprobaciones del carrito con errores propios
+- [x] Catálogo asíncrono con caché
+- [ ] Subtotal, descuentos y cupones
+- [ ] Migración completa a TypeScript estricto y tests
+
+**Siguientes fases**
+
 - [ ] **API REST** con NestJS: validación, errores coherentes y documentación con Swagger
 - [ ] **Base de datos:** PostgreSQL con Prisma
 - [ ] **Usuarios:** registro, login con JWT, roles y seguridad (OWASP)
@@ -34,11 +57,24 @@ El foco está en el **backend**: una API sólida, segura y bien probada, que agu
 - [ ] **Tienda web** con Next.js y shadcn/ui, y panel de administración
 - [ ] **Producción:** Docker, CI con GitHub Actions y despliegue en AWS
 
-## Stack
+## Cómo está hecho
+
+```
+src/
+├── producto.ts          Tipo Producto y categorías
+├── catalogo.ts          Catálogo y consultas sobre él
+├── catalogo-remoto.ts   El catálogo como si viniera de un servidor: promesas y caché
+├── carrito.ts           Carrito inmutable: añadir, quitar y cambiar cantidad
+└── carrito-seguro.ts    Comprueba stock y cantidades antes de tocar el carrito
+```
+
+El núcleo no depende de ningún framework: son funciones puras en TypeScript. Cuando llegue NestJS, la API envolverá este núcleo en lugar de reescribirlo.
+
+### Stack
 
 | Capa | Tecnología |
 | --- | --- |
-| Lenguaje | TypeScript (modo `strict`) |
+| Lenguaje | TypeScript en modo `strict` |
 | Backend | NestJS |
 | Base de datos | PostgreSQL + Prisma |
 | Pagos | Stripe |
@@ -55,7 +91,7 @@ El foco está en el **backend**: una API sólida, segura y bien probada, que agu
 git clone https://github.com/angelgmx/ecommerce.git
 cd ecommerce
 npm install
-npm run dev
+npm run check
 ```
 
 | Script | Qué hace |
@@ -63,9 +99,16 @@ npm run dev
 | `npm run dev` | Ejecuta el proyecto |
 | `npm run check` | Revisa los tipos con TypeScript |
 
+Cada módulo se puede ejecutar por separado con Node, por ejemplo `node src/catalogo-remoto.ts`.
+
 ## Decisiones de diseño
 
-Las decisiones importantes (por qué los precios se guardan en céntimos, por qué esta arquitectura…) se documentan como ADR en `docs/adr/` a medida que se toman.
+Cada decisión importante se documenta como un ADR (*Architecture Decision Record*): qué problema había, qué opciones se valoraron, cuál se eligió y qué se pierde con ella. Se publicarán en `docs/adr/`.
+
+Las primeras:
+
+- **Precios en céntimos**, en lugar de números con decimales.
+- **Un inquilino o multi-inquilino**: si cada tienda tiene su propia instalación o si muchas tiendas comparten una.
 
 ## Contribuir
 
@@ -75,7 +118,7 @@ Las ideas y los fallos encontrados son bienvenidos: abre un *issue* contando qu�
 
 [MIT](LICENSE): puedes usarlo, modificarlo y venderlo, siempre que mantengas el aviso de copyright.
 
----
+<br>
 
 <div align="center">
 
