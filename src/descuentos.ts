@@ -20,15 +20,19 @@ function subtotal(catalogo: Producto[], carrito: Carrito): number {
 }
 
 function aplicarDescuento(totalCentimos: number, porcentaje: number): number {
+    if(porcentaje < 0 || porcentaje > 100) {
+        throw new Error(`El porcentaje debe estar entre 0 y 100 (recibido: ${porcentaje})`)
+    }
     const descuento = Math.round(totalCentimos / 100 * porcentaje);
     return totalCentimos - descuento;
 }
 export class CuponNoValido extends Error {
     constructor(mensaje: string) {
         super(mensaje);
-        this.name = "CuponNoEncontrado";
+        this.name = "CuponNoValido";
     }
 }
+
 /**
  * Subtotal del carrito con el cupón aplicado.
  * Lanza CuponNoValido si el código no existe. Nunca devuelve un total negativo.
