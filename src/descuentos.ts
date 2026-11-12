@@ -23,25 +23,21 @@ function aplicarDescuento(totalCentimos: number, porcentaje: number): number {
     const descuento = Math.round(totalCentimos / 100 * porcentaje);
     return totalCentimos - descuento;
 }
-
-/** Error de «el cupón que has escrito no existe». Es culpa del cliente, se le avisa. */
 export class CuponNoValido extends Error {
     constructor(mensaje: string) {
         super(mensaje);
-        this.name = "CuponNoValido";
+        this.name = "CuponNoEncontrado";
     }
 }
-
 /**
  * Subtotal del carrito con el cupón aplicado.
  * Lanza CuponNoValido si el código no existe. Nunca devuelve un total negativo.
  */
 export function totalConCupon(catalogo: Producto[], carrito: Carrito, codigo: string): number {
     const cupon = buscarCupon(codigo);
-    if (cupon === undefined) {
-        throw new CuponNoValido(`El cupón "${codigo}" no existe`);
+    if(cupon === undefined) {
+        throw new CuponNoValido(`El cupón ${codigo} no existe`);
     }
-
     const base = subtotal(catalogo, carrito);
 
     switch (cupon.tipo) {
