@@ -4,6 +4,26 @@
  */
 
 export type Categoria = "camisetas" | "pantalones" | "zapatillas" | "gorras" | "sudaderas";
+export type TipoCupon = "porcentaje" | "fijo";
+export type Cupon =
+    | { codigo: string; tipo: "porcentaje"; valor: number }
+    | { codigo: string; tipo: "fijo"; valor: number };
+
+/** Normaliza un código de cupón: quita espacios y pasa a mayúsculas. */
+function normalizarCodigo(codigo: string): string {
+    return codigo.trim().toUpperCase();
+}
+
+export const CUPONES: readonly Cupon[] = [
+    { codigo: "VERANO20", tipo: "porcentaje", valor: 20 },
+    { codigo: "AHORRA5",  tipo: "fijo",       valor: 500   }, // -5 €
+    { codigo: "MEGADTO",  tipo: "fijo",       valor: 10000 }, // -100 € (mayor que un carrito barato)
+];
+
+export function buscarCupon(codigo: string): Cupon | undefined {
+    const buscado = normalizarCodigo(codigo);
+    return CUPONES.find(c => normalizarCodigo(c.codigo) === buscado);
+}
 
 export type Producto = {
     id: number;
