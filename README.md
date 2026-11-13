@@ -30,6 +30,7 @@ El foco está en el **backend**: una API sólida, segura y bien probada, pensada
 | Dos personas compran la última unidad a la vez | **Transacciones** y control de stock en la base de datos |
 | Stripe avisa dos veces del mismo pago | **Webhooks idempotentes**: cobrar una vez, aunque el aviso llegue dos |
 | Un error en el carrito deja datos a medias | El dominio **nunca modifica el original**: cada operación devuelve un estado nuevo |
+| Un producto cambia de precio y los pedidos antiguos dejan de cuadrar | Cada pedido **copia nombre y precio** en el momento de la compra |
 
 > [!NOTE]
 > El proyecto está en construcción y avanza por fases. Este README se actualiza al cerrar cada una.
@@ -43,8 +44,12 @@ El foco está en el **backend**: una API sólida, segura y bien probada, pensada
 - [x] Carrito inmutable: añadir, quitar y cambiar cantidad
 - [x] Comprobaciones del carrito con errores propios
 - [x] Catálogo asíncrono con caché
-- [ ] Subtotal, descuentos y cupones
-- [ ] Migración completa a TypeScript estricto y tests
+- [x] Subtotal, descuentos y cupones
+- [x] Pedido inmutable: checkout desde el carrito y estados pendiente → pagado → enviado
+- [x] TypeScript estricto en todo el núcleo
+- [ ] Repositorio genérico en memoria
+- [ ] Validación de datos externos con Zod
+- [ ] Tests con Vitest
 
 **Siguientes fases**
 
@@ -65,7 +70,9 @@ src/
 ├── catalogo.ts          Catálogo y consultas sobre él
 ├── catalogo-remoto.ts   El catálogo como si viniera de un servidor: promesas y caché
 ├── carrito.ts           Carrito inmutable: añadir, quitar y cambiar cantidad
-└── carrito-seguro.ts    Comprueba stock y cantidades antes de tocar el carrito
+├── carrito-seguro.ts    Comprueba stock y cantidades antes de tocar el carrito
+├── descuentos.ts        Subtotal, descuentos por porcentaje y cupones
+└── pedido.ts            Checkout: convierte el carrito en un pedido y lo avanza de estado
 ```
 
 El núcleo no depende de ningún framework: son funciones puras en TypeScript. Cuando llegue NestJS, la API envolverá este núcleo en lugar de reescribirlo.
