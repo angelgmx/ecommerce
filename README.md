@@ -47,7 +47,7 @@ El foco está en el **backend**: una API sólida, segura y bien probada, pensada
 - [x] Subtotal, descuentos y cupones
 - [x] Pedido inmutable: checkout desde el carrito y estados pendiente → pagado → enviado
 - [x] TypeScript estricto en todo el núcleo
-- [ ] Repositorio genérico en memoria
+- [x] Repositorio genérico en memoria
 - [ ] Validación de datos externos con Zod
 - [ ] Tests con Vitest
 
@@ -72,7 +72,8 @@ src/
 ├── carrito.ts           Carrito inmutable: añadir, quitar y cambiar cantidad
 ├── carrito-seguro.ts    Comprueba stock y cantidades antes de tocar el carrito
 ├── descuentos.ts        Subtotal, descuentos por porcentaje y cupones
-└── pedido.ts            Checkout: convierte el carrito en un pedido y lo avanza de estado
+├── pedido.ts            Checkout: convierte el carrito en un pedido y lo avanza de estado
+└── repositorio.ts       Guarda y busca productos y pedidos; hoy en memoria, mañana en PostgreSQL
 ```
 
 El núcleo no depende de ningún framework: son funciones puras en TypeScript. Cuando llegue NestJS, la API envolverá este núcleo en lugar de reescribirlo.
