@@ -68,5 +68,15 @@ function editarProducto(repo: Repositorio<Producto>, id: number, cambios: Edicio
         throw new ProductoNoEncontrado(`El producto ${id} no ha sido encontrado`);
     }
     const productoEditado = { ...producto, ...cambios };
+    repo.guardar(productoEditado);
     return productoEditado;
+}
+
+/** Lista todos los productos con solo id, nombre y precio. */
+function listarResumen(repo: Repositorio<Producto>): ResumenProducto[] {
+    return repo.todos().map(producto => ({
+        id: producto.id,
+        nombre: producto.nombre,
+        precio: producto.precio,
+    }));
 }
