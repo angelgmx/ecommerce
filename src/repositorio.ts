@@ -7,7 +7,7 @@ import type { NuevoProducto, Producto } from "./producto.ts";
 import { ProductoNoEncontrado } from "./catalogo-remoto.ts";
 
 /** Contrato del almacén. Vale para cualquier cosa con id, sea number (Producto) o string (Pedido). */
-interface Repositorio<Elemento extends { id: number | string }> {
+export interface Repositorio<Elemento extends { id: number | string }> {
     /** Todos los elementos, en un array de solo lectura. */
     todos(): readonly Elemento[];
     /** El elemento con ese id, o undefined si no existe. */
@@ -23,7 +23,7 @@ interface Repositorio<Elemento extends { id: number | string }> {
  * Usa un Map para encontrar cualquier elemento por su id al momento.
  * Cuando llegue PostgreSQL, otra clase ocupará su sitio sin tocar el resto del código.
  */
-class RepositorioEnMemoria<Elemento extends { id: number | string }> implements Repositorio<Elemento> {
+export class RepositorioEnMemoria<Elemento extends { id: number | string }> implements Repositorio<Elemento> {
     private datos: Map<Elemento["id"], Elemento>;
 
     constructor(iniciales: Elemento[] = []) {
@@ -56,7 +56,7 @@ type EdicionProducto = Partial<NuevoProducto>;
 type ResumenProducto = Pick<Producto, "id" | "nombre" | "precio">;
 
 /** Crea un producto nuevo con los cambios aplicados. Lanza ProductoNoEncontrado si el id no existe. */
-function editarProducto(repo: Repositorio<Producto>, id: number, cambios: EdicionProducto): Producto {
+export function editarProducto(repo: Repositorio<Producto>, id: number, cambios: EdicionProducto): Producto {
     const producto = repo.buscarPorId(id);
     if (producto === undefined) {
         throw new ProductoNoEncontrado(`El producto ${id} no ha sido encontrado`);
@@ -67,7 +67,7 @@ function editarProducto(repo: Repositorio<Producto>, id: number, cambios: Edicio
 }
 
 /** Lista todos los productos con solo id, nombre y precio. */
-function listarResumen(repo: Repositorio<Producto>): ResumenProducto[] {
+export function listarResumen(repo: Repositorio<Producto>): ResumenProducto[] {
     return repo.todos().map(producto => ({
         id: producto.id,
         nombre: producto.nombre,

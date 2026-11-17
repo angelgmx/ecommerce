@@ -8,7 +8,9 @@
   "private": true,
   "scripts": {
     "dev": "node src/producto.ts",
-    "check": "tsc"
+    "check": "tsc",
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "keywords": [
     "ecommerce",
@@ -27,7 +29,9 @@
   "homepage": "https://github.com/angelgmx/ecommerce#readme",
   "devDependencies": {
     "@types/node": "^26.6.6",
-    "typescript": "^7.0.2"
+    "@vitest/coverage-v8": "^5.1.0",
+    "typescript": "^7.0.2",
+    "vitest": "^5.1.0"
   },
   "dependencies": {
     "zod": "^4.6.7"

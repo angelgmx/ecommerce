@@ -19,12 +19,12 @@ export function buscarPorId(catalogo: Producto[], id: number): Producto | undefi
 }
 
 /** Devuelve los productos de una categoría; lista vacía si no hay ninguno. */
-function filtrarPorCategoria(catalogo: Producto[], categoria: Categoria): Producto[] {
+export function filtrarPorCategoria(catalogo: Producto[], categoria: Categoria): Producto[] {
     return catalogo.filter(p => p.categoria === categoria);
 }
 
 /** Devuelve una copia ordenada de más barato a más caro, sin tocar el original. */
-function ordenarPorPrecio(catalogo: Producto[]): Producto[] {
+export function ordenarPorPrecio(catalogo: Producto[]): Producto[] {
     return catalogo.toSorted((a, b) => a.precio - b.precio);
 }
 
