@@ -3,12 +3,8 @@
  * Es el único sitio con estado; lo que entra y sale sigue siendo inmutable (ADR-003).
  */
 
-import type { Producto } from "./producto.ts";
-import type { Pedido } from "./pedido.ts";
-import { catalogo } from "./catalogo.ts";
+import type { NuevoProducto, Producto } from "./producto.ts";
 import { ProductoNoEncontrado } from "./catalogo-remoto.ts";
-import { anadir } from "./carrito.ts";
-import { checkout } from "./pedido.ts";
 
 /** Contrato del almacén. Vale para cualquier cosa con id, sea number (Producto) o string (Pedido). */
 interface Repositorio<Elemento extends { id: number | string }> {
@@ -54,8 +50,6 @@ class RepositorioEnMemoria<Elemento extends { id: number | string }> implements 
     }
 }
 
-// Omit: todos los campos menos los indicados. Al crear, el id lo pone el sistema.
-type NuevoProducto = Omit<Producto, "id">;
 // Partial: todos los campos opcionales. Al editar se cambia cualquiera menos el id.
 type EdicionProducto = Partial<NuevoProducto>;
 // Pick: solo los campos indicados. Lo justo para listar.

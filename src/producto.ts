@@ -2,8 +2,26 @@
  * Modelo de producto de la tienda.
  * Los precios se guardan en céntimos (enteros) para evitar errores de redondeo.
  */
+import { z } from "zod";
 
-export type Categoria = "camisetas" | "pantalones" | "zapatillas" | "gorras" | "sudaderas";
+export const EsquemaCategoria = z.enum(["camisetas", "pantalones", "zapatillas", "gorras", "sudaderas"]);
+
+export const EsquemaProducto = z.object({
+    id: z.number().int().positive(),
+    nombre: z.string().min(1),
+    /** Precio en céntimos: 1990 son 19,90 €. */
+    precio: z.number().int().positive(),
+    stock: z.number().int().nonnegative(),
+    categoria: EsquemaCategoria,
+});
+
+/** Lo que llega de fuera: el id lo pone el sistema (ADR-006). */
+export const EsquemaNuevoProducto = EsquemaProducto.omit({ id: true });
+
+export type Categoria = z.infer<typeof EsquemaCategoria>;
+export type Producto = z.infer<typeof EsquemaProducto>;
+export type NuevoProducto = z.infer<typeof EsquemaNuevoProducto>;
+
 export type TipoCupon = "porcentaje" | "fijo";
 export type Cupon =
     | { codigo: string; tipo: "porcentaje"; valor: number }
@@ -24,12 +42,3 @@ export function buscarCupon(codigo: string): Cupon | undefined {
     const buscado = normalizarCodigo(codigo);
     return CUPONES.find(c => normalizarCodigo(c.codigo) === buscado);
 }
-
-export type Producto = {
-    id: number;
-    nombre: string;
-    /** Precio en céntimos: 1990 son 19,90 €. */
-    precio: number;
-    stock: number;
-    categoria: Categoria;
-};
