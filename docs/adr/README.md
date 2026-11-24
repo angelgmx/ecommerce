@@ -34,6 +34,7 @@ Los ficheros viven en esta carpeta numerados por orden cronológico; el registro
 | ADR | Decisión | Estado |
 | --- | --- | --- |
 | [0005](0005-postgresql-como-base-de-datos.md) | PostgreSQL como base de datos | ✅ aceptada |
+| [0009](0009-sku-unico-por-producto.md) | SKU único por producto | 📝 propuesta |
 | — | ORM: Prisma o alternativa | ⏳ pendiente |
 
 ### Fases 4 a 9
