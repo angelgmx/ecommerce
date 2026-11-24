@@ -118,7 +118,7 @@ Separar el núcleo y la API en paquetes ([ADR-0008](../adr/0008-monorepo-con-npm
 **Criterios de aceptación:**
 - Las reglas de stock, cantidad y cupones las aplica el núcleo (`carrito-seguro.ts`, `descuentos.ts`); el servicio solo orquesta.
 - `productos` exporta lo que `carritos` necesita, y nada más.
-- ADR-0009 escrito y aceptado.
+- ADR-0010 escrito y aceptado.
 
 ### 2.7 · Configuración y documentación
 
